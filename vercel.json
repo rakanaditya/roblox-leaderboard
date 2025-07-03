@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/public/index.html"
+    }
+  ],
+  "cleanUrls": true,
+  "redirects": [],
+  "headers": [],
+  "trailingSlash": false
+}
