@@ -1,0 +1,290 @@
+/* =======================
+   Global Styles
+========================== */
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('https://img.freepik.com/free-vector/pixel-rain-abstract-background_23-2148367759.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+h1 {
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 3px black;
+}
+
+/* =======================
+   Countdown
+========================== */
+#countdownWrapper {
+  margin: 10px auto 20px;
+  max-width: 600px;
+  text-align: center;
+}
+
+#countdownText {
+  font-size: 14px;
+  color: #ddd;
+  margin-bottom: 6px;
+}
+
+#countdownBarContainer {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#countdownBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #00c853, #ffd600);
+  transition: width 1s linear;
+}
+
+/* =======================
+   Leaderboard Cards
+========================== */
+.leaderboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.game-card {
+  background: rgba(255, 255, 255, 0.95);
+  width: 260px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  color: #000;
+}
+
+.game-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.game-name {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.visits {
+  font-size: 16px;
+  color: #e60039;
+}
+
+/* =======================
+   Rank / Live Badge
+========================== */
+.rank-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #444;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.live-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  animation: pulseLive 1s infinite ease-in-out;
+}
+
+@keyframes pulseLive {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.up {
+  color: green;
+  animation: popUp 0.5s ease;
+}
+
+.down {
+  color: red;
+  animation: popDown 0.5s ease;
+}
+
+@keyframes popUp {
+  0% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes popDown {
+  0% {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* =======================
+   Input & Buttons
+========================== */
+input[type="text"] {
+  padding: 8px;
+  border-radius: 6px;
+  width: 320px;
+  font-size: 14px;
+  border: none;
+}
+
+button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#savePlaceIdsBtn {
+  background: #4caf50;
+  color: white;
+  margin-left: 8px;
+}
+
+#resetPlaceIdsBtn {
+  background: #b71c1c;
+  color: white;
+  margin-left: 5px;
+}
+
+/* Tombol Refresh Manual */
+#manualRefreshBtn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #2196f3;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Container search dan tombol */
+.search-container {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+
+/* Input search */
+#searchInput {
+  padding: 8px;
+  border-radius: 6px;
+  width: 250px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+/* Tombol Clear Search */
+#clearSearch {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #e53935;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#clearSearch.visible {
+  opacity: 1;
+  visibility: visible;
+}
+/* =======================
+   Discord & Donasi Section
+========================== */
+.discord-btn {
+  display: inline-block;
+  background-color: #5865F2;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.donasi-btn {
+  background: #ffc107;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* =======================
+   YouTube LIVE Section
+========================== */
+#youtubeLiveNotice {
+  display: none;
+  background: #b71c1c;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+#youtubeLiveNotice h2 {
+  margin-top: 0;
+}
+
+#youtubeLiveNotice img {
+  width: 240px;
+  border-radius: 10px;
+}
+
+#youtubeEmbed {
+  margin-top: 10px;
+  border-radius: 8px;
+}
