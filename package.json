@@ -1,0 +1,11 @@
+{
+  "name": "roblox-leaderboard",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "vercel-build": "echo Build successful"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
