@@ -85,24 +85,35 @@ function loadLeaderboard() {
       const ytStatus   = document.getElementById("youtubeStatusTitle");
 
       // Kemudian gunakan variabel‑variabel itu berkali‑kali
-      if (yt && yt.youtubeLive && yt.youtubeVideoId) {
-        ytStatus.textContent      = "🔴 Aditya RB Sedang LIVE di YouTube";
-        ytLink.href               = `https://www.youtube.com/watch?v=${yt.youtubeVideoId}`;
-        ytThumb.src               = yt.thumbnail;
-        ytVidTitle.textContent    = yt.title;
-        ytChannel.textContent     = yt.channelTitle;
-        ytEmbed.src               = `https://www.youtube.com/embed/${yt.youtubeVideoId}?autoplay=1`;
-        ytNotice.style.display    = "block";
+       if (yt && yt.youtubeLive && yt.youtubeVideoId) {
+        ytStatus.textContent = "🔴 Aditya RB Sedang LIVE di YouTube";
+        ytLink.href = `https://www.youtube.com/watch?v=${yt.youtubeVideoId}`;
+        ytThumb.src = yt.thumbnail;
+        ytVidTitle.textContent = yt.title;
+        ytChannel.textContent = yt.channelTitle;
 
-      } else if (yt && yt.latestVideoId) {
-        // 📺 Video terbaru
-        ytTitle.textContent = "📺 Video Terbaru dari Aditya RB";
-        document.getElementById("youtubeLiveLink").href = `https://www.youtube.com/watch?v=${yt.latestVideoId}`;
-        document.getElementById("youtubeThumbnail").src = `https://i.ytimg.com/vi/${yt.latestVideoId}/hqdefault.jpg`;
-        document.getElementById("youtubeTitle").textContent = yt.latestVideoTitle || "Video terbaru Aditya RB";
-        document.getElementById("youtubeChannelName").textContent = yt.channelTitle || "Aditya RB";
+        // ✅ Cek apakah embed sama, jika ya jangan reload
+        const currentSrcId = ytEmbed.src.split("/embed/")[1]?.split("?")[0];
+        if (currentSrcId !== yt.youtubeVideoId) {
+          ytEmbed.src = `https://www.youtube.com/embed/${yt.youtubeVideoId}?autoplay=1`;
+        }
+
         ytNotice.style.display = "block";
-        document.getElementById("youtubeEmbed").src = `https://www.youtube.com/embed/${yt.latestVideoId}?autoplay=1`;
+      } else if (yt && yt.latestVideoId) {
+        ytStatus.textContent = "📺 Video Terbaru dari Aditya RB";
+        ytLink.href = `https://www.youtube.com/watch?v=${yt.latestVideoId}`;
+        ytThumb.src = `https://i.ytimg.com/vi/${yt.latestVideoId}/hqdefault.jpg`;
+        ytVidTitle.textContent = yt.latestVideoTitle || "Video terbaru Aditya RB";
+        ytChannel.textContent = yt.channelTitle || "Aditya RB";
+
+        const currentSrcId = ytEmbed.src.split("/embed/")[1]?.split("?")[0];
+        if (currentSrcId !== yt.latestVideoId) {
+          ytEmbed.src = `https://www.youtube.com/embed/${yt.latestVideoId}?autoplay=1`;
+        }
+
+        ytNotice.style.display = "block";
+
+
       } else {
         // ❌ Tidak ada live atau video
         ytTitle.textContent = "🔕 Aditya RB tidak sedang live saat ini";
