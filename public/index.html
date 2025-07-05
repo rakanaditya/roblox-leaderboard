@@ -61,6 +61,28 @@
     <a href="https://saweria.co/rakanaditya" target="_blank" class="donasi-btn">🎁 Donasi via Saweria</a>
   </div>
 
+
+<footer style="text-align: center; margin-top: 20px; font-size: 14px;">
+  <p id="visitorCount">👁️ Total Pengunjung Website: memuat...</p>
+  <a href="/privacy-policy.html">Kebijakan Privasi</a> |
+  <a href="/about.html">Tentang Kami</a>
+</footer>
+
+<script>
+  const counterKey = "roblox-leaderboard-visitor-counter";
+  const countDisplay = document.getElementById("visitorCount");
+
+  fetch(`https://api.countapi.xyz/hit/${counterKey}/visits`)
+    .then(res => res.json())
+    .then(data => {
+      countDisplay.textContent = `👁️ Total Pengunjung Website: ${data.value.toLocaleString()}`;
+    })
+    .catch(() => {
+      countDisplay.textContent = "👁️ Total Pengunjung Website: tidak tersedia 😢";
+    });
+</script>
+
+
   <!-- Footer -->
   <hr style="margin-top: 30px; border: 0; border-top: 1px solid #ccc;">
   <footer style="text-align: center; margin-top: 10px; font-size: 14px;">
