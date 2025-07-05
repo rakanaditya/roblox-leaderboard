@@ -68,19 +68,17 @@ export default async function handler(req, res) {
       // Ambil video terbaru
       const latestUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&order=date&type=video&maxResults=1`;
       const latestData = await fetchYouTubeJSON(latestUrl, key);
-      const v = latestData?.items?.[0];
+      const v = latestData?.items?.find(i => i.id?.videoId);
+if (v) {
+  youtube = {
+    youtubeLive: false,
+    latestVideoId: v.id.videoId,
+    latestVideoTitle: v.snippet.title,
+    channelTitle: v.snippet.channelTitle,
+    thumbnail: v.snippet.thumbnails?.medium?.url || ""
+  };
+}
 
-      if (v) {
-        youtube = {
-          youtubeLive: false,
-          latestVideoId: v.id.videoId,
-          latestVideoTitle: v.snippet.title,
-          channelTitle: v.snippet.channelTitle,
-          thumbnail: v.snippet.thumbnails?.medium?.url || ""
-        };
-        break;
-      }
-    }
 
     if (!youtube) {
       youtube = { youtubeLiveError: "❌ Semua API Key YouTube gagal atau kuota habis." };
