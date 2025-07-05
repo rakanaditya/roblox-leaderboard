@@ -44,8 +44,10 @@ export default async function handler(req, res) {
   let youtube = null;
 
   if (ytLiveRequested && ytKeys.length > 0) {
-    for (const key of ytKeys) {
-      // 1. Cek apakah live
+    for (let i = 0; i < ytKeys.length; i++) {
+      const key = ytKeys[i];
+
+      // 1. Cek apakah sedang live
       const liveUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&eventType=live&type=video`;
       const liveData = await fetchYouTubeJSON(liveUrl, key);
 
@@ -60,7 +62,8 @@ export default async function handler(req, res) {
           youtubeVideoId: videoId,
           title: snippet?.title || "Live Stream",
           channelTitle: snippet?.channelTitle || "Aditya RB",
-          thumbnail: snippet?.thumbnails?.medium?.url || ""
+          thumbnail: snippet?.thumbnails?.medium?.url || "",
+          apiKeyUsed: `YT_API_KEY_${i + 1}`
         };
         break;
       }
@@ -76,7 +79,8 @@ export default async function handler(req, res) {
           latestVideoId: v.id.videoId,
           latestVideoTitle: v.snippet.title,
           channelTitle: v.snippet.channelTitle,
-          thumbnail: v.snippet.thumbnails?.medium?.url || ""
+          thumbnail: v.snippet.thumbnails?.medium?.url || "",
+          apiKeyUsed: `YT_API_KEY_${i + 1}`
         };
         break;
       }
