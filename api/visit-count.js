@@ -1,6 +1,7 @@
 // api/visit-count.js
 export default async function handler(req, res) {
-  const url = process.env.COUNT_TOKEN;
+const token = process.env.VISITOR_SECRET_TOKEN || "COUNTVISIT123";
+const url = `${process.env.COUNT_TOKEN}?token=${token}`;
   if (!url) {
     return res.status(500).json({ error: "COUNT_TOKEN belum tersedia di environment." });
   }
