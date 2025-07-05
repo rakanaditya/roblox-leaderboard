@@ -65,24 +65,26 @@
   <!-- Footer -->
   <hr style="margin-top: 30px; border: 0; border-top: 1px solid #ccc;">
   <footer style="text-align: center; margin-top: 10px; font-size: 14px;">
-  <p id="visitorCount">👁️ Total Pengunjung Website: memuat...</p>
     <a href="/privacy-policy.html">Kebijakan Privasi</a> |
     <a href="/about.html">Tentang Kami</a>
   </footer>
 
 <!-- visit count script -->
-<script>
-  const countDisplay = document.getElementById("visitorCount");
+<div id="visitorCount">👁️ Mengambil data pengunjung...</div>
 
+<script>
   fetch("/api/visit-count")
     .then(res => res.json())
     .then(data => {
-      countDisplay.textContent = `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`;
+      document.getElementById("visitorCount").textContent =
+        `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`;
     })
     .catch(() => {
-      countDisplay.textContent = "👁️ Total Pengunjung Website: tidak tersedia 😢";
+      document.getElementById("visitorCount").textContent =
+        "👁️ Total Pengunjung Website: tidak tersedia 😢";
     });
 </script>
+
 
 
   <!-- ✅ Load script dari public/script.js -->
