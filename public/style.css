@@ -290,27 +290,7 @@ button {
 }
 
 /* =======================
-   Footer
-========================== */
-footer {
-  margin-top: 30px;
-  text-align: center;
-  font-size: 14px;
-  color: #ddd;
-}
-
-footer a {
-  color: #ffd54f;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-/* =======================
-   Content Box (About / Privacy Pages)
+   Content Box (Modern Page Layout)
 ========================== */
 .content-box {
   max-width: 800px;
@@ -346,3 +326,21 @@ footer a:hover {
 .content-box a:hover {
   text-decoration: underline;
 }
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+footer a {
+  color: #ffd54f;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
