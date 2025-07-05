@@ -52,6 +52,7 @@ function loadLeaderboard() {
         ytStatus.textContent = "🔕 Aditya RB tidak sedang live saat ini";
         ytThumb.src = "https://img.freepik.com/premium-vector/ban-filming-live-sign-symbol-icon_204827-341.jpg";
         ytVidTitle.textContent = "Tidak ada siaran langsung ditemukan.";
+        ytChannel.textContent = "Aditya RB";
         ytLink.href = "https://www.youtube.com/@AdityaRB";
         ytEmbed.src = "";
         ytNotice.style.display = "block";
