@@ -1,127 +1,127 @@
-let cache = {
+const cache = {
+  youtube: null,
   timestamp: 0,
-  data: null,
+  ttl: 5 * 60 * 1000 // 5 menit (ms)
 };
-
-const CACHE_DURATION = 1000 * 60 * 3; // 3 menit
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const now = Date.now();
   const allowedParams = ["placeIds", "ytLive"];
   const searchParams = new URLSearchParams();
 
   for (const key of allowedParams) {
-    if (req.query[key]) {
-      searchParams.append(key, req.query[key]);
-    }
+    if (req.query[key]) searchParams.append(key, req.query[key]);
   }
 
-  // === GAS Token ===
   const gasToken = process.env.GAS_TOKEN;
   if (!gasToken) {
     return res.status(500).json({ error: "GAS_TOKEN tidak tersedia di environment." });
   }
   searchParams.append("token", gasToken);
 
-  const gasUrl = `https://script.google.com/macros/s/AKfycbyk3W-3rLAzMifmbYH0GF8CXsh9afHS8wJ9gZch2SZ7447M2FDKXsqr9CDk_588PrDRyg/exec?${searchParams.toString()}`;
-
-  // === Kembalikan Cache jika masih berlaku
-  if (cache.data && now - cache.timestamp < CACHE_DURATION) {
-    return res.status(200).json(cache.data);
-  }
-
-  // === YouTube Setup ===
+  const gasUrl = `https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?${searchParams.toString()}`;
   const ytLiveRequested = req.query.ytLive === "1";
   const ytChannelId = "UCEw2LeYmh2XQG_pgcdfPqHA";
 
   const ytKeys = Object.entries(process.env)
-    .filter(([key]) => key.startsWith("YT_API_KEY_"))
+    .filter(([k]) => k.startsWith("YT_API_KEY_"))
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([_, val]) => val);
+    .map(([_, v]) => v);
 
-  const fetchYouTubeJSON = async (url, key) => {
+  const fetchYouTube = async (url, key) => {
     try {
-      const response = await fetch(`${url}&key=${key}`);
-      if (!response.ok) return null;
-      return await response.json();
+      const res = await fetch(`${url}&key=${key}`);
+      if (!res.ok) return null;
+      return await res.json();
     } catch {
       return null;
     }
   };
 
+  // === YouTube Section with Caching ===
   let youtube = null;
+  const now = Date.now();
 
-  if (ytLiveRequested && ytKeys.length > 0) {
+  const isCacheValid = now - cache.timestamp < cache.ttl;
+  if (ytLiveRequested && ytKeys.length > 0 && isCacheValid && cache.youtube) {
+    youtube = cache.youtube;
+  }
+
+  if (ytLiveRequested && ytKeys.length > 0 && !isCacheValid) {
     for (let i = 0; i < ytKeys.length; i++) {
       const key = ytKeys[i];
 
-      // 1. Cek apakah sedang live
+      // Cek Live
       const liveUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&eventType=live&type=video`;
-      const liveData = await fetchYouTubeJSON(liveUrl, key);
+      const liveData = await fetchYouTube(liveUrl, key);
 
       if (liveData?.items?.length > 0) {
         const videoId = liveData.items[0].id.videoId;
         const detailUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}`;
-        const detail = await fetchYouTubeJSON(detailUrl, key);
+        const detail = await fetchYouTube(detailUrl, key);
         const snippet = detail?.items?.[0]?.snippet;
 
-        youtube = {
-          youtubeLive: true,
-          youtubeVideoId: videoId,
-          title: snippet?.title || "Live Stream",
-          channelTitle: snippet?.channelTitle || "Aditya RB",
-          thumbnail: snippet?.thumbnails?.medium?.url || "",
-          apiKeyUsed: `YT_API_KEY_${i + 1}`
-        };
-        break;
+        if (snippet) {
+          youtube = {
+            youtubeLive: true,
+            youtubeVideoId: videoId,
+            title: snippet.title,
+            channelTitle: snippet.channelTitle,
+            thumbnail: snippet.thumbnails?.medium?.url || "",
+            apiKeyUsed: `YT_API_KEY_${i + 1}`
+          };
+          cache.youtube = youtube;
+          cache.timestamp = now;
+          break;
+        }
       }
+    }
 
-      // 2. Jika tidak live, ambil video terbaru
-      const latestUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&order=date&type=video&maxResults=1`;
-      const latestData = await fetchYouTubeJSON(latestUrl, key);
-      const v = latestData?.items?.[0];
+    // Jika tidak live → Ambil video terbaru
+    if (!youtube) {
+      for (let i = 0; i < ytKeys.length; i++) {
+        const key = ytKeys[i];
+        const latestUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&order=date&type=video&maxResults=1`;
+        const latestData = await fetchYouTube(latestUrl, key);
 
-      if (v) {
-        youtube = {
-          youtubeLive: false,
-          latestVideoId: v.id.videoId,
-          latestVideoTitle: v.snippet.title,
-          channelTitle: v.snippet.channelTitle,
-          thumbnail: v.snippet.thumbnails?.medium?.url || "",
-          apiKeyUsed: `YT_API_KEY_${i + 1}`
-        };
-        break;
+        const item = latestData?.items?.[0];
+        if (item) {
+          youtube = {
+            youtubeLive: false,
+            latestVideoId: item.id.videoId,
+            latestVideoTitle: item.snippet.title,
+            channelTitle: item.snippet.channelTitle,
+            thumbnail: item.snippet.thumbnails?.medium?.url || "",
+            apiKeyUsed: `YT_API_KEY_${i + 1}`
+          };
+          cache.youtube = youtube;
+          cache.timestamp = now;
+          break;
+        }
       }
     }
 
     if (!youtube) {
-      youtube = { youtubeLiveError: "❌ Semua API Key YouTube gagal atau diblokir/limit." };
+      youtube = { youtubeLiveError: "❌ Semua YouTube API Key gagal (limit/invalid)." };
+      cache.youtube = youtube;
+      cache.timestamp = now;
     }
   }
 
-  // === Fetch dari Google Apps Script
+  // === Fetch Google Apps Script
   try {
     const gasRes = await fetch(gasUrl);
     const gasData = await gasRes.json();
 
-    const result = {
-      ...gasData,
-      ...(youtube && { youtube }),
-    };
-
-    // Simpan ke cache
-    cache = {
-      timestamp: now,
-      data: result,
-    };
-
     res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.status(200).json(result);
+    return res.status(200).json({
+      ...gasData,
+      ...(youtube && { youtube })
+    });
   } catch (err) {
-    return res.status(500).json({ error: "Gagal mengambil data dari GAS", detail: err.message });
+    return res.status(500).json({ error: "Gagal fetch dari GAS", detail: err.message });
   }
 }
