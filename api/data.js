@@ -3,7 +3,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  // Parameter yang diperbolehkan
   const allowedParams = ["placeIds", "ytLive"];
   const searchParams = new URLSearchParams();
 
@@ -13,17 +12,16 @@ export default async function handler(req, res) {
     }
   }
 
-  // Tambahkan TOKEN keamanan untuk akses Google Apps Script
+  // === Token keamanan Google Apps Script ===
   const gasToken = process.env.GAS_TOKEN;
   if (!gasToken) {
     return res.status(500).json({ error: "GAS_TOKEN tidak tersedia di environment." });
   }
   searchParams.append("token", gasToken);
 
-  // URL Google Apps Script (GAS)
   const gasUrl = `https://script.google.com/macros/s/AKfycbyk3W-3rLAzMifmbYH0GF8CXsh9afHS8wJ9gZch2SZ7447M2FDKXsqr9CDk_588PrDRyg/exec?${searchParams.toString()}`;
 
-  // Info YouTube
+  // === YouTube API ===
   const ytApiKey = process.env.YT_API_KEY;
   const ytChannelId = "UCEw2LeYmh2XQG_pgcdfPqHA";
 
@@ -34,7 +32,6 @@ export default async function handler(req, res) {
   const ytLiveUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&eventType=live&type=video&key=${ytApiKey}`;
 
   try {
-    // Request paralel GAS dan YouTube LIVE
     const [gasRes, ytRes] = await Promise.all([
       fetch(gasUrl),
       fetch(ytLiveUrl)
@@ -43,7 +40,7 @@ export default async function handler(req, res) {
     const gasData = await gasRes.json();
     let youtube = { youtubeLive: false };
 
-    // Cek apakah sedang live
+    // === Cek LIVE
     if (ytRes.ok) {
       const ytData = await ytRes.json();
       if (ytData.items && ytData.items.length > 0) {
@@ -64,13 +61,13 @@ export default async function handler(req, res) {
       };
     }
 
-    // Jika tidak sedang live, ambil video terbaru
+    // === Ambil video terbaru jika tidak LIVE
     if (!youtube.youtubeLive) {
       const latestUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&order=date&type=video&maxResults=1&key=${ytApiKey}`;
       const latestRes = await fetch(latestUrl);
       if (latestRes.ok) {
         const latestData = await latestRes.json();
-        if (latestData.items && latestData.items.length > 0) {
+        if (latestData.items?.length > 0) {
           const v = latestData.items[0];
           youtube = {
             youtubeLive: false,
@@ -83,7 +80,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // Set header dan response
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=30");
 
