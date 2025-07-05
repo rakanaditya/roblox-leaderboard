@@ -74,20 +74,23 @@
 
 <script>
   fetch("/api/visit-count")
-    .then(res => res.json())
-    .then(data => {
-      if (data.visitors) {
-        document.getElementById("visitorCount").textContent =
-          `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`;
-      } else {
-        throw new Error("No visitors data");
-      }
+    .then(res => {
+      if (!res.ok) throw new Error("Network response was not ok");
+      return res.json();
     })
-    .catch(() => {
+    .then(data => {
+      const el = document.getElementById("visitorCount");
+      el.textContent = data.visitors && typeof data.visitors === "number"
+        ? `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`
+        : "👁️ Data pengunjung tidak tersedia 😢";
+    })
+    .catch(err => {
+      console.error("Fetch visitor error:", err);
       document.getElementById("visitorCount").textContent =
         "👁️ Total Pengunjung Website: tidak tersedia 😢";
     });
 </script>
+
 
 
 
