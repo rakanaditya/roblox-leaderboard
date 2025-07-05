@@ -76,14 +76,19 @@
   fetch("/api/visit-count")
     .then(res => res.json())
     .then(data => {
-      document.getElementById("visitorCount").textContent =
-        `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`;
+      if (data.visitors) {
+        document.getElementById("visitorCount").textContent =
+          `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`;
+      } else {
+        throw new Error("No visitors data");
+      }
     })
     .catch(() => {
       document.getElementById("visitorCount").textContent =
         "👁️ Total Pengunjung Website: tidak tersedia 😢";
     });
 </script>
+
 
 
 
