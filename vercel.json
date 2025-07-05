@@ -2,11 +2,9 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/public/index.html"
+      "destination": "/index.html"
     }
   ],
   "cleanUrls": true,
-  "redirects": [],
-  "headers": [],
   "trailingSlash": false
 }
