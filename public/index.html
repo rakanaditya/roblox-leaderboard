@@ -1,262 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--  Iklan di sini -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4781114770893598"
-        crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block; text-align:center; margin: 20px auto;"
-     data-ad-client="ca-pub-4781114770893598"
-     data-ad-slot="1234567890"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4781114770893598"
+          crossorigin="anonymous"></script>
+  <ins class="adsbygoogle"
+       style="display:block; text-align:center; margin: 20px auto;"
+       data-ad-client="ca-pub-4781114770893598"
+       data-ad-slot="1234567890"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 
   <meta charset="UTF-8">
   <title>Roblox Game Visit Leaderboard</title>
-<link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<div id="youtubeLiveNotice" style="display:none; background: #b71c1c; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; text-align: left;">
-  <h2 id="youtubeStatusTitle" style="margin-top: 0;">🔴 Aditya RB Sedang LIVE di YouTube</h2>
+  <div id="youtubeLiveNotice" style="display:none; background: #b71c1c; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; text-align: left;">
+    <h2 id="youtubeStatusTitle" style="margin-top: 0;">🔴 Aditya RB Sedang LIVE di YouTube</h2>
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+      <img id="youtubeThumbnail" src="" alt="Live Thumbnail" style="width: 240px; border-radius: 10px;">
+      <div>
+        <p id="youtubeTitle" style="font-size: 16px; font-weight: bold; margin-bottom: 6px;"></p>
+        <a id="youtubeLiveLink" href="#" target="_blank" style="background: yellow; color: black; padding: 10px 16px; border-radius: 8px; font-weight: bold; text-decoration: none;">▶️ Tonton Sekarang</a>
+        <p style="margin-top: 10px; font-size: 14px; color: #ccc;">Channel: <span id="youtubeChannelName"></span></p>
+      </div>
+    </div>
+    <iframe id="youtubeEmbed" width="100%" height="315" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top: 10px; border-radius: 8px;"></iframe>
+  </div>
 
-  <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-    <img id="youtubeThumbnail" src="" alt="Live Thumbnail" style="width: 240px; border-radius: 10px;">
-    <div>
-      <p id="youtubeTitle" style="font-size: 16px; font-weight: bold; margin-bottom: 6px;"></p>
-      <a id="youtubeLiveLink" href="#" target="_blank" style="background: yellow; color: black; padding: 10px 16px; border-radius: 8px; font-weight: bold; text-decoration: none;">▶️ Tonton Sekarang</a>
-      <p style="margin-top: 10px; font-size: 14px; color: #ccc;">Channel: <span id="youtubeChannelName"></span></p>
+  <h1>🔥 Roblox Game Visit Leaderboard</h1>
+
+  <div class="search-container">
+    <input id="searchInput" type="text" placeholder="🔍 Search game...">
+    <button id="clearSearch">❌ Clear</button>
+    <button id="manualRefreshBtn">🔄 Refresh Manual</button>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <input id="placeIdInput" type="text" placeholder="➕ Tambah Place ID (pisahkan dengan koma)">
+    <button id="savePlaceIdsBtn">💾 Simpan ID</button>
+    <button id="resetPlaceIdsBtn">♻️ Reset Default</button>
+  </div>
+
+  <div id="countdownWrapper">
+    <div id="countdownText">⏳ Refresh in: 30s</div>
+    <div id="countdownBarContainer">
+      <div id="countdownBar"></div>
     </div>
   </div>
-  <iframe id="youtubeEmbed" width="100%" height="315" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top: 10px; border-radius: 8px;"></iframe>
-</div>
 
-<h1>🔥 Roblox Game Visit Leaderboard</h1>
+  <div id="totalsDisplay">🎯 Total semua kunjungan: ...<br>🎮 Total pemain online saat ini: ...</div>
 
-<div class="search-container">
-  <input id="searchInput" type="text" placeholder="🔍 Search game...">
-  <button id="clearSearch">❌ Clear</button>
-  <button id="manualRefreshBtn">🔄 Refresh Manual</button>
-</div>
+  <div class="leaderboard" id="leaderboard"></div>
 
-<div style="margin-bottom: 15px;">
-  <input id="placeIdInput" type="text" placeholder="➕ Tambah Place ID (pisahkan dengan koma)">
-  <button id="savePlaceIdsBtn">💾 Simpan ID</button>
-  <button id="resetPlaceIdsBtn">♻️ Reset Default</button>
-</div>
+  <iframe src="https://discord.com/widget?id=798751181508837376&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
 
-<div id="countdownWrapper">
-  <div id="countdownText">⏳ Refresh in: 30s</div>
-  <div id="countdownBarContainer">
-    <div id="countdownBar"></div>
+  <!-- Donasi Section -->
+  <div style="margin-top: 10px;">
+    <a href="https://discord.com/invite/qjnSUrv3aa" target="_blank" class="discord-btn">Join Our Discord Server</a>
+    <h3 style="margin-top: 30px;">💖 Dukung Kami</h3>
+    <p style="font-size: 14px; margin-bottom: 10px;">Website ini dikembangkan secara gratis. Jika kamu merasa terbantu, kamu bisa dukung kami lewat donasi:</p>
+    <a href="https://saweria.co/rakanaditya" target="_blank" class="donasi-btn">🎁 Donasi via Saweria</a>
   </div>
-</div>
 
-<div id="totalsDisplay">🎯 Total semua kunjungan: ...<br>🎮 Total pemain online saat ini: ...</div>
+  <hr style="margin-top: 30px; border: 0; border-top: 1px solid #ccc;">
+  <footer style="text-align: center; margin-top: 10px; font-size: 14px;">
+    <a href="/privacy-policy.html">Kebijakan Privasi</a> |
+    <a href="/about.html">Tentang Kami</a>
+  </footer>
 
-<div class="leaderboard" id="leaderboard"></div>
-
-<iframe src="https://discord.com/widget?id=798751181508837376&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-<!-- Donasi Section -->
-<div style="margin-top: 10px;">
-  <a href="https://discord.com/invite/qjnSUrv3aa" target="_blank" class="discord-btn">Join Our Discord Server</a>
-  <h3 style="margin-top: 30px;">💖 Dukung Kami</h3>
-  <p style="font-size: 14px; margin-bottom: 10px;">Website ini dikembangkan secara gratis. Jika kamu merasa terbantu, kamu bisa dukung kami lewat donasi:</p>
-  <a href="https://saweria.co/rakanaditya" target="_blank" class="donasi-btn">🎁 Donasi via Saweria</a>
-</div>
-
-<!-- ⬇️ Tambahkan footer di sini -->
-<hr style="margin-top: 30px; border: 0; border-top: 1px solid #ccc;">
-<footer style="text-align: center; margin-top: 10px; font-size: 14px;">
-  <a href="/privacy-policy.html">Kebijakan Privasi</a> |
-  <a href="/about.html">Tentang Kami</a>
-</footer>
-
-
-<script>
-
-const endpoint = "https://roblox-leaderboard.vercel.app/api/data";
-const defaultPlaceIds = ["3187302798", "11399819772", "115326572683504", "115958813741074"];
-let previousRanks = {};
-const refreshInterval = 30;
-let countdown = 0;
-
-function getCurrentPlaceIds() {
-  const saved = localStorage.getItem("customPlaceIds");
-  return saved ? saved.split(",").map(id => id.trim()).filter(Boolean) : defaultPlaceIds;
-}
-
-function loadLeaderboard() {
-  const placeIds = getCurrentPlaceIds();
-  fetch(`${endpoint}?placeIds=${placeIds.join(",")}&ytLive=1`)
-    .then(res => res.json())
-    .then(data => {
-      const yt = data.youtube;
-      const ytNotice = document.getElementById("youtubeLiveNotice");
-      const ytTitle = document.getElementById("youtubeStatusTitle");
-
-         // Cache DOM nodes sekali saja
-      const ytLink     = document.getElementById("youtubeLiveLink");
-      const ytThumb    = document.getElementById("youtubeThumbnail");
-      const ytVidTitle = document.getElementById("youtubeTitle");
-      const ytChannel  = document.getElementById("youtubeChannelName");
-      const ytEmbed    = document.getElementById("youtubeEmbed");
-      const ytStatus   = document.getElementById("youtubeStatusTitle");
-
-      // Kemudian gunakan variabel‑variabel itu berkali‑kali
-       if (yt && yt.youtubeLive && yt.youtubeVideoId) {
-        ytStatus.textContent = "🔴 Aditya RB Sedang LIVE di YouTube";
-        ytLink.href = `https://www.youtube.com/watch?v=${yt.youtubeVideoId}`;
-        ytThumb.src = yt.thumbnail;
-        ytVidTitle.textContent = yt.title;
-        ytChannel.textContent = yt.channelTitle;
-
-        // ✅ Cek apakah embed sama, jika ya jangan reload
-        const currentSrcId = ytEmbed.src.split("/embed/")[1]?.split("?")[0];
-        if (currentSrcId !== yt.youtubeVideoId) {
-          ytEmbed.src = `https://www.youtube.com/embed/${yt.youtubeVideoId}?autoplay=1`;
-        }
-
-        ytNotice.style.display = "block";
-      } else if (yt && yt.latestVideoId) {
-        ytStatus.textContent = "📺 Video Terbaru dari Aditya RB";
-        ytLink.href = `https://www.youtube.com/watch?v=${yt.latestVideoId}`;
-        ytThumb.src = `https://i.ytimg.com/vi/${yt.latestVideoId}/hqdefault.jpg`;
-        ytVidTitle.textContent = yt.latestVideoTitle || "Video terbaru Aditya RB";
-        ytChannel.textContent = yt.channelTitle || "Aditya RB";
-
-        const currentSrcId = ytEmbed.src.split("/embed/")[1]?.split("?")[0];
-        if (currentSrcId !== yt.latestVideoId) {
-          ytEmbed.src = `https://www.youtube.com/embed/${yt.latestVideoId}?autoplay=1`;
-        }
-
-        ytNotice.style.display = "block";
-
-
-      } else {
-        // ❌ Tidak ada live atau video
-        ytTitle.textContent = "🔕 Aditya RB tidak sedang live saat ini";
-        document.getElementById("youtubeThumbnail").src = "https://img.freepik.com/premium-vector/ban-filming-live-sign-symbol-icon_204827-341.jpg";
-        document.getElementById("youtubeTitle").textContent = "Tidak ada siaran langsung ditemukan.";
-        document.getElementById("youtubeChannelName").textContent = "Aditya RB";
-        document.getElementById("youtubeLiveLink").href = "https://www.youtube.com/@AdityaRB";
-        document.getElementById("youtubeEmbed").src = "";
-        ytNotice.style.display = "block";
-      }
-
-
-
-      // --- Game Leaderboard ---
-      const container = document.getElementById("leaderboard");
-      container.innerHTML = "";
-      const games = data.games || [];
-      const totalVisits = games.reduce((sum, game) => sum + (game.visits || 0), 0);
-      const totalPlayers = games.reduce((sum, game) => sum + (game.playing || 0), 0);
-      document.getElementById("totalsDisplay").innerHTML =
-        `🎯 Total semua kunjungan: ${totalVisits.toLocaleString()} visits<br>` +
-        `🎮 Total pemain online saat ini: ${totalPlayers.toLocaleString()} players`;
-
-      games.sort((a, b) => (b.visits || 0) - (a.visits || 0));
-      games.forEach((game, index) => {
-        const rank = index + 1;
-        const previousRank = previousRanks[game.placeId];
-        previousRanks[game.placeId] = rank;
-        let rankChange = "";
-        if (previousRank) {
-          if (rank < previousRank) rankChange = `<span class="up">⬆️</span>`;
-          else if (rank > previousRank) rankChange = `<span class="down">⬇️</span>`;
-        }
-
-        const div = document.createElement("div");
-        div.className = "game-card";
-        if (game.error) {
-          div.innerHTML = `<p>Error loading game ${game.placeId}</p>`;
-        } else {
-          const isLive = game.playing > 1000 ? `<div class="live-badge">🔴 LIVE</div>` : "";
-          div.innerHTML = `
-            <div class="rank-indicator">#${rank} ${rankChange}</div>
-            ${isLive}
-            <img src="${game.thumbnail}" alt="${game.name}">
-            <div class="game-name">${game.name}</div>
-            <div class="visits">${game.visits.toLocaleString()} visits</div>
-            <div class="visits" style="color:#007bff">${game.playing.toLocaleString()} players online</div>`;
-        }
-        container.appendChild(div);
-      });
-    })
-    .catch(err => console.error("Gagal memuat leaderboard:", err));
-}
-
-function updateCountdownUI() {
-  const text = document.getElementById("countdownText");
-  const bar = document.getElementById("countdownBar");
-  const secondsLeft = refreshInterval - countdown;
-  text.textContent = `⏳ Refresh in: ${secondsLeft}s`;
-  bar.style.width = (countdown / refreshInterval) * 100 + "%";
-  countdown++;
-  if (countdown > refreshInterval) {
-    countdown = 0;
-    loadLeaderboard();
-  }
-}
-
-// Init
-loadLeaderboard();
-setInterval(updateCountdownUI, 1000);
-
-// Search
-const searchInput = document.getElementById("searchInput");
-const clearButton = document.getElementById("clearSearch");
-
-searchInput.addEventListener("input", function () {
-  const keyword = this.value.toLowerCase();
-  if (this.value.length > 0) clearButton.classList.add("visible");
-  else clearButton.classList.remove("visible");
-
-  document.querySelectorAll(".game-card").forEach(card => {
-    const name = card.querySelector(".game-name")?.textContent.toLowerCase() || "";
-    card.style.display = name.includes(keyword) ? "block" : "none";
-  });
-});
-
-clearButton.addEventListener("click", function () {
-  searchInput.value = "";
-  document.querySelectorAll(".game-card").forEach(card => card.style.display = "block");
-  clearButton.classList.remove("visible");
-});
-
-// Manual refresh
-document.getElementById("manualRefreshBtn").addEventListener("click", () => {
-  countdown = 0;
-  loadLeaderboard();
-});
-
-// Save/Reset Place ID
-document.getElementById("savePlaceIdsBtn").addEventListener("click", function () {
-  const input = document.getElementById("placeIdInput").value;
-  const ids = input.split(",").map(id => id.trim()).filter(Boolean);
-  const isValid = ids.every(id => /^\d+$/.test(id));
-  if (!isValid) return alert("⚠️ Semua Place ID harus berupa angka!");
-  if (ids.length === 0) return alert("⚠️ Masukkan minimal satu Place ID yang valid.");
-  if (ids.length > 10) return alert("⚠️ Maksimal hanya boleh 10 Place ID!");
-
-  localStorage.setItem("customPlaceIds", ids.join(","));
-  countdown = 0;
-  loadLeaderboard();
-  alert("✅ Place IDs diperbarui!");
-});
-
-document.getElementById("resetPlaceIdsBtn").addEventListener("click", function () {
-  localStorage.removeItem("customPlaceIds");
-  countdown = 0;
-  loadLeaderboard();
-  alert("🔄 Place IDs direset ke default.");
-});
-</script>
+  <!-- Load JavaScript from public folder -->
+  <script src="/script.js"></script>
 </body>
 </html>
