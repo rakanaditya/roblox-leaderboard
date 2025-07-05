@@ -309,3 +309,40 @@ footer a:hover {
   text-decoration: underline;
 }
 
+/* =======================
+   Content Box (About / Privacy Pages)
+========================== */
+.content-box {
+  max-width: 800px;
+  margin: 40px auto;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  text-align: left;
+}
+
+.content-box h1,
+.content-box h2 {
+  color: #ffd54f;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.content-box p {
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: #eee;
+  font-size: 16px;
+}
+
+.content-box a {
+  color: #4fc3f7;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.content-box a:hover {
+  text-decoration: underline;
+}
