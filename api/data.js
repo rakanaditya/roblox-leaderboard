@@ -1,8 +1,16 @@
+let cache = {
+  timestamp: 0,
+  data: null,
+};
+
+const CACHE_DURATION = 1000 * 60 * 3; // 3 menit
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
+  const now = Date.now();
   const allowedParams = ["placeIds", "ytLive"];
   const searchParams = new URLSearchParams();
 
@@ -12,15 +20,19 @@ export default async function handler(req, res) {
     }
   }
 
-  // === Token GAS ===
+  // === GAS Token ===
   const gasToken = process.env.GAS_TOKEN;
   if (!gasToken) {
     return res.status(500).json({ error: "GAS_TOKEN tidak tersedia di environment." });
   }
   searchParams.append("token", gasToken);
 
-  // === GAS URL ===
   const gasUrl = `https://script.google.com/macros/s/AKfycbyk3W-3rLAzMifmbYH0GF8CXsh9afHS8wJ9gZch2SZ7447M2FDKXsqr9CDk_588PrDRyg/exec?${searchParams.toString()}`;
+
+  // === Kembalikan Cache jika masih berlaku
+  if (cache.data && now - cache.timestamp < CACHE_DURATION) {
+    return res.status(200).json(cache.data);
+  }
 
   // === YouTube Setup ===
   const ytLiveRequested = req.query.ytLive === "1";
@@ -87,20 +99,28 @@ export default async function handler(req, res) {
     }
 
     if (!youtube) {
-      youtube = { youtubeLiveError: "❌ Semua API Key YouTube gagal atau diblokir." };
+      youtube = { youtubeLiveError: "❌ Semua API Key YouTube gagal atau diblokir/limit." };
     }
   }
 
-  // === Ambil data dari Google Apps Script
+  // === Fetch dari Google Apps Script
   try {
     const gasRes = await fetch(gasUrl);
     const gasData = await gasRes.json();
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.status(200).json({
+    const result = {
       ...gasData,
-      ...(youtube && { youtube })
-    });
+      ...(youtube && { youtube }),
+    };
+
+    // Simpan ke cache
+    cache = {
+      timestamp: now,
+      data: result,
+    };
+
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    return res.status(200).json(result);
   } catch (err) {
     return res.status(500).json({ error: "Gagal mengambil data dari GAS", detail: err.message });
   }
