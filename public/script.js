@@ -1,5 +1,3 @@
-// public/script.js
-
 const endpoint = "https://roblox-leaderboard.vercel.app/api/data";
 const defaultPlaceIds = ["3187302798", "11399819772", "115326572683504", "115958813741074"];
 let previousRanks = {};
@@ -26,6 +24,7 @@ function loadLeaderboard() {
       const ytEmbed = document.getElementById("youtubeEmbed");
 
       if (yt && yt.youtubeLive && yt.youtubeVideoId) {
+        // Jika sedang live
         ytStatus.textContent = "🔴 Aditya RB Sedang LIVE di YouTube";
         ytLink.href = `https://www.youtube.com/watch?v=${yt.youtubeVideoId}`;
         ytThumb.src = yt.thumbnail;
@@ -37,9 +36,10 @@ function loadLeaderboard() {
         }
         ytNotice.style.display = "block";
       } else if (yt && yt.latestVideoId) {
+        // Jika tidak live, tampilkan video terbaru
         ytStatus.textContent = "📺 Video Terbaru dari Aditya RB";
         ytLink.href = `https://www.youtube.com/watch?v=${yt.latestVideoId}`;
-        ytThumb.src = `https://i.ytimg.com/vi/${yt.latestVideoId}/hqdefault.jpg`;
+        ytThumb.src = yt.thumbnail;
         ytVidTitle.textContent = yt.latestVideoTitle || "Video terbaru Aditya RB";
         ytChannel.textContent = yt.channelTitle || "Aditya RB";
         const currentSrcId = ytEmbed.src.split("/embed/")[1]?.split("?")[0];
@@ -48,6 +48,7 @@ function loadLeaderboard() {
         }
         ytNotice.style.display = "block";
       } else {
+        // Jika error
         ytStatus.textContent = "🔕 Aditya RB tidak sedang live saat ini";
         ytThumb.src = "https://img.freepik.com/premium-vector/ban-filming-live-sign-symbol-icon_204827-341.jpg";
         ytVidTitle.textContent = "Tidak ada siaran langsung ditemukan.";
@@ -57,6 +58,7 @@ function loadLeaderboard() {
         ytNotice.style.display = "block";
       }
 
+      // Leaderboard Section
       const container = document.getElementById("leaderboard");
       container.innerHTML = "";
       const games = data.games || [];
