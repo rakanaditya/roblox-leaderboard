@@ -61,6 +61,34 @@
     <a href="https://saweria.co/rakanaditya" target="_blank" class="donasi-btn">🎁 Donasi via Saweria</a>
   </div>
 
+<!-- visit count script -->
+<div id="visitorCount">👁️ Mengambil data pengunjung...</div>
+
+<script>
+  fetch("/api/visit-count")
+    .then(async res => {
+      if (!res.ok) {
+        const text = await res.text(); // untuk debugging error JSON yang tidak valid
+        throw new Error(`Network error: ${res.status} - ${text}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      const el = document.getElementById("visitorCount");
+      if (data && typeof data.visitors === "number") {
+        el.textContent = `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`;
+      } else {
+        el.textContent = "👁️ Data pengunjung tidak tersedia 😢";
+      }
+    })
+    .catch(err => {
+      console.error("Fetch visitor error:", err.message);
+      document.getElementById("visitorCount").textContent =
+        "👁️ Total Pengunjung Website: tidak tersedia 😢";
+    });
+</script>
+
+
 
   <!-- Footer -->
   <hr style="margin-top: 30px; border: 0; border-top: 1px solid #ccc;">
@@ -68,28 +96,6 @@
     <a href="/privacy-policy.html">Kebijakan Privasi</a> |
     <a href="/about.html">Tentang Kami</a>
   </footer>
-
-<!-- visit count script -->
-<div id="visitorCount">👁️ Mengambil data pengunjung...</div>
-
-<script>
-  fetch("/api/visit-count")
-    .then(res => {
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
-    })
-    .then(data => {
-      const el = document.getElementById("visitorCount");
-      el.textContent = data.visitors && typeof data.visitors === "number"
-        ? `👁️ Total Pengunjung Website: ${data.visitors.toLocaleString()}`
-        : "👁️ Data pengunjung tidak tersedia 😢";
-    })
-    .catch(err => {
-      console.error("Fetch visitor error:", err);
-      document.getElementById("visitorCount").textContent =
-        "👁️ Total Pengunjung Website: tidak tersedia 😢";
-    });
-</script>
 
 
   <!-- ✅ Load script dari public/script.js -->
