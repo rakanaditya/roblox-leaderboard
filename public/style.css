@@ -288,3 +288,24 @@ button {
   margin-top: 10px;
   border-radius: 8px;
 }
+
+/* =======================
+   Footer
+========================== */
+footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #ddd;
+}
+
+footer a {
+  color: #ffd54f;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
