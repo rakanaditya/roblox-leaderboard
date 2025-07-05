@@ -61,14 +61,14 @@
     <a href="https://saweria.co/rakanaditya" target="_blank" class="donasi-btn">🎁 Donasi via Saweria</a>
   </div>
 
-<!-- visit count script -->
+<!-- Visitor Count -->
 <div id="visitorCount">👁️ Mengambil data pengunjung...</div>
 
 <script>
   fetch("/api/visit-count")
     .then(async res => {
       if (!res.ok) {
-        const text = await res.text(); // untuk debugging error JSON yang tidak valid
+        const text = await res.text();
         throw new Error(`Network error: ${res.status} - ${text}`);
       }
       return res.json();
@@ -87,6 +87,7 @@
         "👁️ Total Pengunjung Website: tidak tersedia 😢";
     });
 </script>
+
 
 
 
