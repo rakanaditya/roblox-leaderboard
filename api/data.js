@@ -22,21 +22,21 @@ export default async function handler(req, res) {
   // === GAS URL ===
   const gasUrl = `https://script.google.com/macros/s/AKfycbyk3W-3rLAzMifmbYH0GF8CXsh9afHS8wJ9gZch2SZ7447M2FDKXsqr9CDk_588PrDRyg/exec?${searchParams.toString()}`;
 
-  // === YouTube API Setup ===
+  // === YouTube Setup ===
   const ytLiveRequested = req.query.ytLive === "1";
   const ytChannelId = "UCEw2LeYmh2XQG_pgcdfPqHA";
+
   const ytKeys = Object.entries(process.env)
     .filter(([key]) => key.startsWith("YT_API_KEY_"))
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([_, val]) => val);
 
   const fetchYouTubeJSON = async (url, key) => {
-    const fullUrl = `${url}&key=${key}`;
     try {
-      const res = await fetch(fullUrl);
-      if (!res.ok) return null;
-      return await res.json();
-    } catch (err) {
+      const response = await fetch(`${url}&key=${key}`);
+      if (!response.ok) return null;
+      return await response.json();
+    } catch {
       return null;
     }
   };
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
   if (ytLiveRequested && ytKeys.length > 0) {
     for (const key of ytKeys) {
-      // Cek live
+      // 1. Cek apakah live
       const liveUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&eventType=live&type=video`;
       const liveData = await fetchYouTubeJSON(liveUrl, key);
 
@@ -65,27 +65,29 @@ export default async function handler(req, res) {
         break;
       }
 
-      // Ambil video terbaru
+      // 2. Jika tidak live, ambil video terbaru
       const latestUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${ytChannelId}&order=date&type=video&maxResults=1`;
       const latestData = await fetchYouTubeJSON(latestUrl, key);
-      const v = latestData?.items?.find(i => i.id?.videoId);
-if (v) {
-  youtube = {
-    youtubeLive: false,
-    latestVideoId: v.id.videoId,
-    latestVideoTitle: v.snippet.title,
-    channelTitle: v.snippet.channelTitle,
-    thumbnail: v.snippet.thumbnails?.medium?.url || ""
-  };
-}
+      const v = latestData?.items?.[0];
 
+      if (v) {
+        youtube = {
+          youtubeLive: false,
+          latestVideoId: v.id.videoId,
+          latestVideoTitle: v.snippet.title,
+          channelTitle: v.snippet.channelTitle,
+          thumbnail: v.snippet.thumbnails?.medium?.url || ""
+        };
+        break;
+      }
+    }
 
     if (!youtube) {
-      youtube = { youtubeLiveError: "❌ Semua API Key YouTube gagal atau kuota habis." };
+      youtube = { youtubeLiveError: "❌ Semua API Key YouTube gagal atau diblokir." };
     }
   }
 
-  // === Fetch dari Google Apps Script ===
+  // === Ambil data dari Google Apps Script
   try {
     const gasRes = await fetch(gasUrl);
     const gasData = await gasRes.json();
@@ -96,6 +98,6 @@ if (v) {
       ...(youtube && { youtube })
     });
   } catch (err) {
-    return res.status(500).json({ error: "Gagal fetch data dari Google Apps Script", detail: err.message });
+    return res.status(500).json({ error: "Gagal mengambil data dari GAS", detail: err.message });
   }
 }
