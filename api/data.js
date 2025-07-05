@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   searchParams.append("token", gasToken);
 
   // === GAS URL ===
-  const gasUrl = `https://script.google.com/macros/s/YOUR_GAS_DEPLOYMENT_ID/exec?${searchParams.toString()}`;
+  const gasUrl = `https://script.google.com/macros/s/AKfycbyk3W-3rLAzMifmbYH0GF8CXsh9afHS8wJ9gZch2SZ7447M2FDKXsqr9CDk_588PrDRyg/exec?${searchParams.toString()}`;
 
   // === YouTube API Setup ===
   const ytLiveRequested = req.query.ytLive === "1";
