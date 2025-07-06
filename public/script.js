@@ -160,3 +160,33 @@ document.getElementById("resetPlaceIdsBtn").addEventListener("click", function (
   loadLeaderboard();
   alert("🔄 Place IDs direset ke default.");
 });
+
+export function loadVisitorCount() {
+  const el = document.getElementById("visitorCount");
+  if (!el) return;
+
+  el.innerHTML = `<span class="loading-spinner"></span> Mengambil data pengunjung...`;
+
+  fetch("/api/visit-count")
+    .then(async res => {
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Network error: ${res.status} - ${text}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data && typeof data.visitors === "number") {
+        el.innerHTML = `👁️ <strong>${data.visitors.toLocaleString()}</strong> Pengunjung Website`;
+      } else {
+        el.textContent = "👁️ Data pengunjung tidak tersedia 😢";
+      }
+    })
+    .catch(err => {
+      console.error("Fetch visitor error:", err.message);
+      el.textContent = "👁️ Total Pengunjung Website: tidak tersedia 😢";
+    });
+}
+
+
+
