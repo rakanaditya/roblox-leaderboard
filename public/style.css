@@ -344,3 +344,32 @@ footer a:hover {
   text-decoration: underline;
 }
 
+.visitor-box {
+  background: #f0f0f0;
+  color: #333;
+  padding: 12px 20px;
+  margin-top: 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
+/* Optional: loading spinner */
+.loading-spinner {
+  border: 3px solid #ccc;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
