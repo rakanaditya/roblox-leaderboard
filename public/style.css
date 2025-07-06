@@ -240,23 +240,63 @@ button {
 /* =======================
    Discord & Donasi Section
 ========================== */
-.discord-btn {
-  display: inline-block;
-  background-color: #5865F2;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
+.donation-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 600px;
+  margin: 40px auto 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
 }
 
-.donasi-btn {
-  background: #ffc107;
-  color: black;
+.donation-card h3 {
+  font-size: 22px;
+  color: #ffd54f;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.donation-card p {
+  font-size: 15px;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+/* Tombol Umum */
+.btn {
+  display: inline-block;
   padding: 10px 20px;
-  border-radius: 8px;
+  font-size: 15px;
   font-weight: bold;
+  border: none;
+  border-radius: 8px;
   text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 6px;
+}
+
+/* Discord Button */
+.btn.discord-btn {
+  background-color: #5865F2;
+  color: white;
+}
+
+.btn.discord-btn:hover {
+  background-color: #4752c4;
+}
+
+/* Donasi Button */
+.btn.donasi-btn {
+  background-color: #ffc107;
+  color: black;
+}
+
+.btn.donasi-btn:hover {
+  background-color: #e0a800;
 }
 
 /* =======================
