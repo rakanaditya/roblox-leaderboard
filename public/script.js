@@ -112,7 +112,7 @@ function updateCountdownUI() {
 }
 
 // Fungsi untuk memuat jumlah pengunjung website
-export function loadVisitorCount() {
+ function loadVisitorCount() {
   const el = document.getElementById("visitorCount");
   if (!el) return;
 
