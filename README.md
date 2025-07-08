@@ -15,9 +15,6 @@
 
 ---
 
-
-## 📦 Instalasi & Setup
-
 ## 🙏 Terima Kasih
 
 Terima kasih sudah menggunakan Roblox Leaderboard! Jika kamu suka proyek ini, jangan lupa dukung lewat donasi dan bergabung di Discord kami.
