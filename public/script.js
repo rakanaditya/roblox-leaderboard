@@ -1,5 +1,5 @@
 const endpoint = "https://roblox-leaderboard.vercel.app/api/data";
-const defaultPlaceIds = ["3187302798", "11399819772", "115326572683504", "115958813741074"];
+const defaultPlaceIds = ["3187302798", "11399819772", "115326572683504", "115958813741074, 116925158649823"];
 let previousRanks = {};
 const refreshInterval = 30;
 let countdown = 0;
