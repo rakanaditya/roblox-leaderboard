@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Stats Roblox</title>
+</head>
+<body style="background:#111; color:#fff; font-family:sans-serif; text-align:center; padding:50px;">
+  <h1>🔹 Cek Data Roblox</h1>
+  <input id="username" placeholder="Masukkan username Roblox" />
+  <button onclick="loadStats()">Cari</button>
+  <p id="stats">Masukkan username dulu...</p>
+
+  <script>
+    async function loadStats() {
+      const username = document.getElementById("username").value;
+      const res = await fetch(`https://roblox-leaderboard.vercel.app//getstats/${username}`);
+      const data = await res.json();
+      if (data.error) {
+        document.getElementById("stats").innerText = "❌ User tidak ditemukan";
+      } else {
+        document.getElementById("stats").innerText =
+          `👤 ${data.username} | ⭐ Points: ${data.points} | 🛡️ Survivals: ${data.survivals}`;
+      }
+    }
+  </script>
+</body>
+</html>
