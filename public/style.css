@@ -48,41 +48,182 @@ h1 {
   transition: width 1s linear;
 }
 
+/* =========================
+   TOP POPULAR SECTION
+========================= */
+.top-section {
+  padding: 24px 16px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.top-section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+/* =========================
+   TABS
+========================= */
+.top-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.top-tabs .tab {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #1c1c26;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.top-tabs .tab:hover {
+  background: #2a2a3a;
+}
+
+.top-tabs .tab.active {
+  background: #5865f2;
+  color: white;
+  font-weight: 600;
+}
+
+/* =========================
+   SLIDER
+========================= */
+.top-slider {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+
+.top-slider::-webkit-scrollbar {
+  height: 6px;
+}
+
+.top-slider::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 999px;
+}
+
+/* =========================
+   CARD
+========================= */
+.top-card {
+  min-width: 180px;
+  background: linear-gradient(180deg, #1a1a24, #13131b);
+  border-radius: 14px;
+  padding: 12px;
+  position: relative;
+  scroll-snap-align: start;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.top-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================
+   RANK BADGE
+========================= */
+.top-rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* =========================
+   LIVE INDICATOR
+========================= */
+.live-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4f;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 77, 79, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 79, 0);
+  }
+}
+
+/* =========================
+   THUMBNAIL
+========================= */
+.top-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* =========================
+   GAME INFO
+========================= */
+.top-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-value {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+/* =========================
+   DESKTOP IMPROVEMENT
+========================= */
+@media (min-width: 768px) {
+  .top-slider {
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .top-card {
+    min-width: auto;
+  }
+}
+
+/* =========================
+   TOP POPULAR SECTION
+========================= */
+
+
 /* =======================
    Leaderboard Cards
 ========================== */
-
-#topPopularGames {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.top-game-card {
-  width: 160px;
-  background: #fff;
-  padding: 8px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.top-game-card img {
-  width: 100%;
-  border-radius: 8px;
-}
-
-.top-game-name {
-  font-weight: bold;
-  margin-top: 6px;
-}
-
-.top-game-visits {
-  font-size: 13px;
-  color: #555;
-}
-
 
 .leaderboard {
   display: flex;
