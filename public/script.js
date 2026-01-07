@@ -1,5 +1,14 @@
 const endpoint = "https://roblox-leaderboard.vercel.app/api/data";
 const defaultPlaceIds = ["3187302798", "11399819772", "115326572683504", "115958813741074", "116925158649823"];
+// ===== TOP POPULAR GAMES (KHUSUS) =====
+const topPopularPlaceIds = [
+  "121864768012064",
+  "7041939546",
+  "3260590327",
+  "76558904092080"
+];
+
+
 let previousRanks = {};
 const refreshInterval = 30;
 let countdown = 0;
@@ -16,10 +25,8 @@ function loadLeaderboard() {
   fetch(`${endpoint}?placeIds=${placeIds.join(",")}&ytLive=1`)
     .then(res => res.json())
     .then(data => {
-       const games = data.games || [];
       
       handleYouTube(data.youtube || {});
-      renderTopPopular(games);
       renderLeaderboard(data.games || []);
     })
     .catch(err => console.error("Gagal memuat leaderboard:", err));
@@ -63,32 +70,68 @@ function handleYouTube(yt) {
 
 
 // ================= TOP POPULAR =================
-function renderTopPopular(games) {
-  const topPopularContainer = document.getElementById("topPopularGames");
-  if (!topPopularContainer) return;
+function loadTopPopularGames() {
+  fetch(`${endpoint}?placeIds=${topPopularPlaceIds.join(",")}`)
+    .then(res => res.json())
+    .then(data => {
+      renderTopPopular(data.games || []);
+    })
+    .catch(err => console.error("Top Popular error:", err));
+}
 
-  // Urutkan berdasarkan visits
-  const sortedByVisits = [...games].sort(
-    (a, b) => (b.visits || 0) - (a.visits || 0)
+let currentTopType = "visits";
+
+function renderTopPopular(games) {
+  const container = document.getElementById("topPopularGames");
+  if (!container) return;
+
+  const sorted = [...games].sort((a, b) =>
+    (b[currentTopType] || 0) - (a[currentTopType] || 0)
   );
 
-  // Ambil 5 teratas
-  const top5 = sortedByVisits.slice(0, 5);
+  const top5 = sorted.slice(0, 5);
+  container.innerHTML = "";
 
-  // Render
-  topPopularContainer.innerHTML = "";
-  top5.forEach(game => {
-    topPopularContainer.innerHTML += `
-      <div class="top-game-card">
-        <img src="${game.thumbnail}" alt="${game.name}">
-        <div class="top-game-name">${game.name}</div>
-        <div class="top-game-visits">
-          ${game.visits.toLocaleString()} visits
+  top5.forEach((game, index) => {
+    const rank = index + 1;
+
+    const medal =
+      rank === 1 ? "🥇" :
+      rank === 2 ? "🥈" :
+      rank === 3 ? "🥉" : "";
+
+    const live =
+      game.playing >= 1000
+        ? `<div class="live-indicator">🔴 LIVE</div>`
+        : "";
+
+    container.innerHTML += `
+      <div class="top-card">
+        <div class="top-rank">${medal} #${rank}</div>
+        ${live}
+        <img src="${game.thumbnail}">
+        <div class="top-name">${game.name}</div>
+        <div class="top-value">
+          ${currentTopType === "visits"
+            ? `${game.visits.toLocaleString()} visits`
+            : `${game.playing.toLocaleString()} playing`}
         </div>
       </div>
     `;
   });
 }
+
+document.querySelectorAll(".top-tabs .tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".top-tabs .tab")
+      .forEach(t => t.classList.remove("active"));
+
+    tab.classList.add("active");
+    currentTopType = tab.dataset.type;
+
+    loadTopPopularGames(); // 🔥 reload khusus top popular
+  });
+});
 
 
 // Menampilkan leaderboard
@@ -174,6 +217,7 @@ function updateCountdownUI() {
 
 // === Inisialisasi saat load ===
 loadLeaderboard();
+loadTopPopularGames();   // top popular KHUSUS
 loadVisitorCount();
 setInterval(updateCountdownUI, 1000);
 
