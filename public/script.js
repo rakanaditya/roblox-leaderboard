@@ -16,7 +16,10 @@ function loadLeaderboard() {
   fetch(`${endpoint}?placeIds=${placeIds.join(",")}&ytLive=1`)
     .then(res => res.json())
     .then(data => {
+       const games = data.games || [];
+      
       handleYouTube(data.youtube || {});
+      renderTopPopular(games);
       renderLeaderboard(data.games || []);
     })
     .catch(err => console.error("Gagal memuat leaderboard:", err));
@@ -57,6 +60,36 @@ function handleYouTube(yt) {
 
   ytNotice.style.display = "block";
 }
+
+
+// ================= TOP POPULAR =================
+function renderTopPopular(games) {
+  const topPopularContainer = document.getElementById("topPopularGames");
+  if (!topPopularContainer) return;
+
+  // Urutkan berdasarkan visits
+  const sortedByVisits = [...games].sort(
+    (a, b) => (b.visits || 0) - (a.visits || 0)
+  );
+
+  // Ambil 5 teratas
+  const top5 = sortedByVisits.slice(0, 5);
+
+  // Render
+  topPopularContainer.innerHTML = "";
+  top5.forEach(game => {
+    topPopularContainer.innerHTML += `
+      <div class="top-game-card">
+        <img src="${game.thumbnail}" alt="${game.name}">
+        <div class="top-game-name">${game.name}</div>
+        <div class="top-game-visits">
+          ${game.visits.toLocaleString()} visits
+        </div>
+      </div>
+    `;
+  });
+}
+
 
 // Menampilkan leaderboard
 function renderLeaderboard(games) {
