@@ -253,11 +253,16 @@ const clearButton = document.getElementById("clearSearch");
 searchInput.addEventListener("input", function () {
   const keyword = this.value.toLowerCase();
   clearButton.classList.toggle("visible", this.value.length > 0);
-  document.querySelectorAll(".game-card").forEach(card => {
-    const name = card.querySelector(".game-name")?.textContent.toLowerCase() || "";
+
+  document.querySelectorAll(".game-card, .top-card").forEach(card => {
+    const name =
+      card.querySelector(".game-name, .top-name")
+        ?.textContent.toLowerCase() || "";
+
     card.style.display = name.includes(keyword) ? "block" : "none";
   });
 });
+
 
 clearButton.addEventListener("click", () => {
   searchInput.value = "";
