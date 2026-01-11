@@ -184,6 +184,7 @@ function updateCountdownUI() {
   if (countdown > refreshInterval) {
     countdown = 0;
     loadLeaderboard();
+    loadTopPopularGames();
   }
 }
 
@@ -225,6 +226,7 @@ setInterval(updateCountdownUI, 1000);
 document.getElementById("manualRefreshBtn").addEventListener("click", () => {
   countdown = 0;
   loadLeaderboard();
+  loadTopPopularGames();
 });
 
 document.getElementById("savePlaceIdsBtn").addEventListener("click", () => {
@@ -237,6 +239,7 @@ document.getElementById("savePlaceIdsBtn").addEventListener("click", () => {
   localStorage.setItem("customPlaceIds", ids.join(","));
   countdown = 0;
   loadLeaderboard();
+  loadTopPopularGames();
   alert("✅ Place IDs diperbarui!");
 });
 
@@ -244,6 +247,7 @@ document.getElementById("resetPlaceIdsBtn").addEventListener("click", () => {
   localStorage.removeItem("customPlaceIds");
   countdown = 0;
   loadLeaderboard();
+  loadTopPopularGames();
   alert("🔄 Place IDs direset ke default.");
 });
 
