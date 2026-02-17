@@ -171,7 +171,7 @@ const emit = defineEmits(['toast'])
 const API = '/api/data'
 const REFRESH_MS = 10_000
 const DEFAULT_IDS = ['3187302798','11399819772','115326572683504','115958813741074','116925158649823']
-const TOP_IDS = ['121864768012064','7041939546','3260590327','76558904092080']
+const TOP_IDS = ['121864768012064','7041939546','3260590327','2753915549','76558904092080']
 
 const games = ref([]), topGames = ref([]), yt = ref(null)
 const loading = ref(true), isSyncing = ref(false)
