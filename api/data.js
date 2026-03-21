@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   }
   searchParams.append("token", gasToken);
 
-  const gasUrl = `https://script.google.com/macros/s/AKfycbyneRdCMmDl47_mrFl-Adft5R0fK1UY41VGKA4c79WqDBspP-BVlIEbmRkKTOdi95I-ZQ/exec?${searchParams.toString()}`;
+  const gasUrl = `https://script.google.com/macros/s/AKfycby8152bsuU5QuBjwCSnmLyNm4kOG8CNdw1Bcvk8BJNcdBMNFuYOnN9v2h9C_hYbs2z4gQ/exec?${searchParams.toString()}`;
   const ytLiveRequested = req.query.ytLive === "1";
   const ytChannelId = "UCEw2LeYmh2XQG_pgcdfPqHA";
 
